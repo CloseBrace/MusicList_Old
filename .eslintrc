@@ -1,0 +1,10 @@
+{
+  "extends": "airbnb",
+  "plugins": ["jest"],
+  "env": {
+    "jest/globals": true
+  },
+  "rules": {
+    "no-unused-vars": ["error", {"argsIgnorePattern":"next"}]
+  }
+}
