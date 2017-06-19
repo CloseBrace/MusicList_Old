@@ -4,8 +4,10 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
+    "start-w": "webpack-dev-server",
     "test": "jest",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "build-dev": "webpack --config webpack.config.js --progress --profile --colors"
   },
   "dependencies": {
     "babel-core": "^6.24.1",
@@ -27,6 +29,7 @@
     "passport-local-mongoose": "^4.0.0",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
+    "react-router-dom": "^4.1.1",
     "sass-loader": "^6.0.5",
     "serve-favicon": "~2.4.2",
     "webpack": "^2.5.1"
@@ -39,6 +42,8 @@
     "eslint-plugin-jsx-a11y": "^5.0.1",
     "eslint-plugin-react": "^7.0.1",
     "jest": "^19.0.2",
-    "supertest": "^3.0.0"
+    "react-hot-loader": "next",
+    "supertest": "^3.0.0",
+    "webpack-dev-server": "^2.4.5"
   }
 }

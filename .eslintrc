@@ -2,9 +2,13 @@
   "extends": "airbnb",
   "plugins": ["jest"],
   "env": {
-    "jest/globals": true
+    "jest/globals": true,
+    "browser": true,
+    "node": true
   },
   "rules": {
-    "no-unused-vars": ["error", {"argsIgnorePattern":"next"}]
+    "no-unused-vars": ["error", {"argsIgnorePattern":"next"}],
+    "react/prop-types": [0],
+    "import/no-extraneous-dependencies": ["error", { "devDependencies": true }]
   }
 }
