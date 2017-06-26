@@ -32,7 +32,9 @@
     "react-router-dom": "^4.1.1",
     "sass-loader": "^6.0.5",
     "serve-favicon": "~2.4.2",
-    "webpack": "^2.5.1"
+    "webpack": "^2.5.1",
+    "webpack-dev-middleware": "^1.11.0",
+    "webpack-hot-middleware": "^2.18.0"
   },
   "devDependencies": {
     "eslint": "^3.19.0",
