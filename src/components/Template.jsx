@@ -10,7 +10,7 @@ export default function Template() {
     <Router>
       <div className="wrapper">
         <Header username="anonymous" />
-        <section className="page-content">
+        <section className="page-content container-fluid">
           <Route exact path="/" component={HomePage} />
           <Route path="/account/profile/:id" component={ProfilePage} />
         </section>
