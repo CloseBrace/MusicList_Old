@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "start-w": "webpack-dev-server",
+    "start-prod": "NODE_ENV=production node ./bin/www",
     "test": "jest",
     "lint": "eslint .",
     "build-dev": "webpack --config webpack.config.js --progress --profile --colors"
@@ -13,7 +13,7 @@
     "babel-core": "^6.24.1",
     "babel-jest": "^20.0.3",
     "babel-loader": "^7.0.0",
-    "babel-preset-es2017": "^6.24.1",
+    "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
     "body-parser": "~1.17.1",
     "bootstrap": "4.0.0-alpha.6",
@@ -58,7 +58,6 @@
     "redux-devtools-dock-monitor": "^1.1.2",
     "redux-devtools-log-monitor": "^1.3.0",
     "redux-logger": "^3.0.6",
-    "supertest": "^3.0.0",
-    "webpack-dev-server": "^2.4.5"
+    "supertest": "^3.0.0"
   }
 }

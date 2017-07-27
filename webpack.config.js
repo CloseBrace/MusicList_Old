@@ -55,3 +55,8 @@ module.exports = {
     new ExtractTextPlugin('stylesheets/style.css'),
   ],
 };
+
+if (process.env.NODE_ENV === 'production') {
+  module.exports.plugins.push(new webpack.optimize.UglifyJsPlugin());
+}
+
