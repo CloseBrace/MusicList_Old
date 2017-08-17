@@ -7,7 +7,7 @@
     "start-prod": "NODE_ENV=production node ./bin/www",
     "test": "jest",
     "lint": "eslint .",
-    "build-dev": "webpack --config webpack.config.js --progress --profile --colors"
+    "build-prod": "NODE_ENV=production webpack -p --config webpack.config.babel.js"
   },
   "dependencies": {
     "babel-core": "^6.24.1",
@@ -42,7 +42,7 @@
     "sass-loader": "^6.0.6",
     "serve-favicon": "~2.4.2",
     "style-loader": "^0.18.2",
-    "webpack": "^2.5.1",
+    "webpack": "^3.4.1",
     "webpack-dev-middleware": "^1.11.0",
     "webpack-hot-middleware": "^2.18.0"
   },
