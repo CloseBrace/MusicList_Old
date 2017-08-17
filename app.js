@@ -1,3 +1,4 @@
+require('babel-register');
 const express = require('express');
 const path = require('path');
 const favicon = require('serve-favicon');
@@ -13,7 +14,7 @@ const expressSession = require('express-session')({
   saveUninitialized: false,
 });
 const webpack = require('webpack');
-const webpackConfig = require('./webpack.config');
+const webpackConfig = require('./webpack.config.babel');
 const webpackDevMiddleware = require('webpack-dev-middleware');
 const webpackHotMiddleware = require('webpack-hot-middleware');
 
