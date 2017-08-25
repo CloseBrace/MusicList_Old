@@ -14,18 +14,13 @@ export default function reducer(state = initialState, action) {
       newState.isLoggingIn = true;
       return newState;
     }
-    case 'AUTHENTICATION_LOGIN_FAILURE': {
-      const newState = {
-        firstName: '',
-        id: '',
-        isLoggedIn: false,
-        isLoggingIn: false,
-        lastName: '',
-        username: '',
-      };
+    case 'AUTHENTICATION_LOGIN_FAILURE':
+    case 'AUTHENTICATION_SESSION_CHECK_FAILURE': {
+      const newState = Object.assign({}, initialState);
       return newState;
     }
-    case 'AUTHENTICATION_LOGIN_SUCCESS': {
+    case 'AUTHENTICATION_LOGIN_SUCCESS':
+    case 'AUTHENTICATION_SESSION_CHECK_SUCCESS': {
       const newState = Object.assign({}, state);
       newState.firstName = action.json.firstName;
       newState.id = action.json._id;
