@@ -3,14 +3,16 @@ import { connect } from 'react-redux';
 import Template from './Template';
 
 function TemplateContainer(props) {
+  const { authentication, progress } = props;
   return (
-    <Template progress={props.progress} />
+    <Template progress={progress} authentication={authentication} />
   );
 }
 
 function mapStateToProps(state) {
   return {
     progress: state.progress,
+    authentication: state.authentication,
   };
 }
 
