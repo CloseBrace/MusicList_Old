@@ -15,7 +15,8 @@ export default function reducer(state = initialState, action) {
       return newState;
     }
     case 'AUTHENTICATION_LOGIN_FAILURE':
-    case 'AUTHENTICATION_SESSION_CHECK_FAILURE': {
+    case 'AUTHENTICATION_SESSION_CHECK_FAILURE':
+    case 'AUTHENTICATION_LOGOUT_SUCCESS': {
       const newState = Object.assign({}, initialState);
       return newState;
     }
@@ -29,6 +30,10 @@ export default function reducer(state = initialState, action) {
       newState.lastName = action.json.lastName;
       newState.username = action.json.username;
       return newState;
+    }
+    case 'AUTHENTICATION_LOGOUT_FAILURE': {
+      // todo: handle error!
+      return state;
     }
     default: {
       return state;
