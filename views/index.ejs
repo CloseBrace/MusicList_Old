@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <% if (process.env.NODE_ENV === 'production') { %>
+      <link rel="stylesheet" href="/stylesheets/style-prod.css" />
+    <% } else { %>
+      <link rel="stylesheet" href="/stylesheets/style.css" />
+    <% } %>
+  </head>
+  <body>
+    <div id="react-app">Loading &hellip;</div>
+  </body>
+  <% if (process.env.NODE_ENV === 'production') { %>
+      <script src="/javascripts/build-prod.js"></script>
+  <% } else { %>
+    <script src="/javascripts/build.js"></script>
+  <% } %>
+</html>
