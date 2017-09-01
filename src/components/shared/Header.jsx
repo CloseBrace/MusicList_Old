@@ -19,8 +19,14 @@ export default class Header extends React.Component {
 
   logOutClick(e) {
     e.preventDefault();
-    const { logUserOut } = this.props;
-    logUserOut();
+    const { logUserOutFunction } = this.props;
+    logUserOutFunction();
+  }
+
+  toggleNavbar() {
+    this.setState({
+      isOpen: !this.state.isOpen,
+    });
   }
 
   renderGreeting(name) {
@@ -29,12 +35,6 @@ export default class Header extends React.Component {
         Welcome, {name} | <a href="/logout" onClick={this.logOutClick}>Log Out</a>
       </span>
     );
-  }
-
-  toggleNavbar() {
-    this.setState({
-      isOpen: !this.state.isOpen,
-    });
   }
 
   render() {
