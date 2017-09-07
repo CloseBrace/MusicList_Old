@@ -1,50 +1,25 @@
 import React from 'react';
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { checkSession } from '../actions/authentication';
+
 import Template from './Template';
-import { sessionCheckFailure, sessionCheckSuccess } from '../actions/authentication';
 
 class TemplateContainer extends React.Component {
   constructor(props) {
     super(props);
 
     // bound functions
-    this.checkSession = this.checkSession.bind(this);
+    this.checkUserSession = this.checkUserSession.bind(this);
   }
 
   componentWillMount() {
     // Before the component mounts, check for an existing user session
-    this.checkSession();
+    this.checkUserSession();
   }
 
-  async checkSession() {
-    const { sessionCheckFailureAction, sessionCheckSuccessAction } = this.props;
-    // contact the API
-    await fetch(
-      // where to contact
-      '/api/authentication/checksession',
-      // what to send
-      {
-        method: 'GET',
-        credentials: 'same-origin',
-      },
-    )
-    .then((response) => {
-      if (response.status === 200) {
-        return response.json();
-      }
-      return null;
-    })
-    .then((json) => {
-      if (json.username) {
-        sessionCheckSuccessAction(json);
-      } else {
-        sessionCheckFailureAction();
-      }
-    })
-    .catch((error) => {
-      sessionCheckFailureAction(error);
-    });
+  checkUserSession() {
+    const { dispatch } = this.props;
+    dispatch(checkSession());
   }
 
   render() {
@@ -55,13 +30,6 @@ class TemplateContainer extends React.Component {
   }
 }
 
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators({
-    sessionCheckFailureAction: sessionCheckFailure,
-    sessionCheckSuccessAction: sessionCheckSuccess,
-  }, dispatch);
-}
-
 function mapStateToProps(state) {
   return {
     progress: state.progress,
@@ -69,4 +37,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(TemplateContainer);
+export default connect(mapStateToProps)(TemplateContainer);
