@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 
-export default class ProfilePage extends React.Component {
+export default class RegisterPage extends React.Component {
   constructor(props) {
     super(props);
 
