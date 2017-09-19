@@ -121,7 +121,7 @@ oreferrer">1Password</a>
             </FormGroup>
 
             <Button color="primary" onClick={this.compileFormData}>Register</Button>
-          </Form>
+          </Form>   
         </div>
       </div>
     );
