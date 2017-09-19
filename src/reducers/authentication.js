@@ -42,6 +42,11 @@ export default function reducer(state = initialState, action) {
       newState.registrationSucceeded = true;
       return newState;
     }
+    case 'AUTHENTICATION_REGISTRATION_SUCCESS_VIEWED': {
+      const newState = Object.assign({}, state);
+      newState.registrationSucceeded = false;
+      return newState;
+    }
     default: {
       return state;
     }
