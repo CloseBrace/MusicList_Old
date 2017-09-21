@@ -34,7 +34,6 @@ export default function reducer(state = initialState, action) {
     }
     case 'AUTHENTICATION_LOGOUT_FAILURE':
     case 'AUTHENTICATION_REGISTRATION_FAILURE': {
-      // todo: handle error!
       return state;
     }
     case 'AUTHENTICATION_REGISTRATION_SUCCESS': {
