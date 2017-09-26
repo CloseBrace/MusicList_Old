@@ -1,14 +1,15 @@
 import React from 'react';
-import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
+import { AvForm, AvGroup, AvInput, AvFeedback } from 'availity-reactstrap-validation';
+import { Button, Label } from 'reactstrap';
 
 export default class RegisterPage extends React.Component {
   constructor(props) {
     super(props);
 
     // bound functions
-    this.compileFormData = this.compileFormData.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
+    this.handleValidSubmit = this.handleValidSubmit.bind(this);
 
     // component state
     this.state = {
@@ -18,13 +19,6 @@ export default class RegisterPage extends React.Component {
       password: '',
       username: '',
     };
-  }
-
-  // Put everything together and send it up to the register function
-  compileFormData() {
-    const { registerFunction } = this.props;
-    const formData = this.state;
-    registerFunction(formData);
   }
 
   // Handle input changes
@@ -40,88 +34,106 @@ export default class RegisterPage extends React.Component {
     }
   }
 
+  // Handle submission once all form data is valid
+  handleValidSubmit() {
+    const { registerFunction } = this.props;
+    const formData = this.state;
+    registerFunction(formData);
+  }
+
   render() {
     return (
       <div className="row justify-content-center">
         <div className="col-10 col-sm-7 col-md-5 col-lg-4">
           <p>
             Want to get started saving your favorite bands to MusicList?
-            Create an account!
+            Create an account! All fields are required.
           </p>
-          <Form>
-            <FormGroup>
+          <AvForm onValidSubmit={this.handleValidSubmit}>
+            <AvGroup>
               <Label for="email">Email</Label>
-              <Input
+              <AvInput
                 id="email"
                 name="email"
                 onChange={this.handleInputChange}
                 onKeyPress={this.handleKeyPress}
                 placeholder="noreply@musiclist.com"
+                required
                 type="email"
                 value={this.state.email}
               />
-            </FormGroup>
+              <AvFeedback>A valid email is required to register.</AvFeedback>
+            </AvGroup>
 
-            <FormGroup>
+            <AvGroup>
               <Label for="password">Password</Label>
-              <Input
+              <AvInput
                 id="password"
+                minLength="8"
                 name="password"
                 onChange={this.handleInputChange}
                 onKeyPress={this.handleKeyPress}
                 placeholder="password"
+                required
                 type="password"
                 value={this.state.password}
               />
+              <AvFeedback>Passwords must be at least eight characters in length</AvFeedback>
               <span>
                 We recommend a password service like&nbsp;
                 <a href="https://www.lastpass.com/" target="_blank" rel="noopener noreferrer">LastPass</a>
                 &nbsp;or <a href="https://1password.com/" target="_blank" rel="noopener 
 oreferrer">1Password</a>
               </span>
-            </FormGroup>
+            </AvGroup>
 
-            <FormGroup>
+            <AvGroup>
               <Label for="username">Username</Label>
-              <Input
+              <AvInput
                 id="username"
                 name="username"
                 onChange={this.handleInputChange}
                 onKeyPress={this.handleKeyPress}
                 placeholder="CaptainCode"
+                required
                 type="text"
                 value={this.state.username}
               />
-            </FormGroup>
+              <AvFeedback>A username is required to register</AvFeedback>
+            </AvGroup>
 
-            <FormGroup>
+            <AvGroup>
               <Label for="firstName">First Name</Label>
-              <Input
+              <AvInput
                 id="firstName"
                 name="firstName"
                 onChange={this.handleInputChange}
                 onKeyPress={this.handleKeyPress}
                 placeholder="Jamie"
+                required
                 type="text"
                 value={this.state.firstName}
               />
-            </FormGroup>
+              <AvFeedback>A first name is required to register</AvFeedback>
+            </AvGroup>
 
-            <FormGroup>
+            <AvGroup>
               <Label for="lastName">Last Name</Label>
-              <Input
+              <AvInput
                 id="lastName"
                 name="lastName"
                 onChange={this.handleInputChange}
                 onKeyPress={this.handleKeyPress}
                 placeholder="Smith"
+                required
                 type="text"
                 value={this.state.lastName}
               />
-            </FormGroup>
+              <AvFeedback>A last name is required to register</AvFeedback>
+            </AvGroup>
 
-            <Button color="primary" onClick={this.compileFormData}>Register</Button>
-          </Form>   
+            <Button color="primary">Register</Button>
+          </AvForm>
         </div>
       </div>
     );
