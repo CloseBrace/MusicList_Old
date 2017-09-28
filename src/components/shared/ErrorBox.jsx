@@ -8,7 +8,7 @@ export default function ErrorBox(props) {
     <div className="row justify-content-center">
       <div className="col-6">
         <Alert color="danger" isOpen={isError} toggle={closeErrorFunction}>
-          <strong>Error:</strong> {error.message}
+          <strong>Error:</strong> {error && error.message ? error.message : 'An undefined error occurred' }
         </Alert>
       </div>
     </div>
