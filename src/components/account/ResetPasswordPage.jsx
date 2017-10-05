@@ -7,6 +7,7 @@ export default class ResetPasswordPage extends React.Component {
     super(props);
 
     // bound functions
+    this.clearPasswordReset = this.clearPasswordReset.bind(this);
     this.handleEmailChange = this.handleEmailChange.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
     this.handleValidSubmit = this.handleValidSubmit.bind(this);
@@ -15,6 +16,21 @@ export default class ResetPasswordPage extends React.Component {
     this.state = {
       email: '',
     };
+  }
+
+  // clear out the email form if we're rendering the success message
+  componentWillReceiveProps(nextProps) {
+    const { isPasswordReset } = nextProps;
+    if (isPasswordReset) {
+      this.setState({ email: '' });
+    }
+  }
+
+  // show the form again so a new email can be sent
+  clearPasswordReset(e) {
+    e.preventDefault();
+    const { clearPasswordResetFunction } = this.props;
+    clearPasswordResetFunction();
   }
 
   // update state as email value changes
@@ -37,6 +53,24 @@ export default class ResetPasswordPage extends React.Component {
   }
 
   render() {
+    const { isPasswordReset } = this.props;
+
+    if (isPasswordReset) {
+      return (
+        <div className="row justify-content-center">
+          <div className="col-10 col-sm-7 col-md-5 col-lg-4">
+            <p>
+              An email has been sent to the address you provided containing a link to reset
+              your password. Please click that link to proceed with setting a new password.
+            </p>
+            <p>
+              <a href="/account/reset-password" onClick={this.clearPasswordReset}>Re-send Email</a>
+            </p>
+          </div>
+        </div>
+      );
+    }
+
     return (
       <div className="row justify-content-center">
         <div className="col-10 col-sm-7 col-md-5 col-lg-4">
