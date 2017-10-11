@@ -1,5 +1,9 @@
 const crypto = require('crypto');
 const express = require('express');
+const mailgun = require('mailgun-js')({
+  apiKey: 'key-c7930afd4e505703001da49370b403fa',
+  domain: 'sandboxdd91bae839780f8a25c8bbe5a98c7636.mailgun.org',
+});
 const mongoose = require('mongoose');
 const passport = require('passport');
 const User = require('../../models/user.js');
@@ -95,7 +99,24 @@ router.post('/saveresethash', async (req, res) => {
 
     foundUser.save((err) => {
       if (err) { result = res.send(JSON.stringify({ error: 'Something went wrong while attempting to reset your password. Please Try again' })); }
-      result = res.send(JSON.stringify({ success: true }));
+
+      // Put together the email
+      const emailData = {
+        from: 'CloseBrace <postmaster@sandboxcc80cfa391224d5d83e5aba2d09b7590.mailgun.org>',
+        to: foundUser.email,
+        subject: 'Reset Your Password',
+        text: `A password reset has been requested for the MusicList account connected to this email address. If you made this request, please click the following link: https://musiclist.com/account/change-password/${foundUser.passwordReset} ... if you didn't make this request, feel free to ignore it!`,
+        html: `<p>A password reset has been requested for the MusicList account connected to this email address. If you made this request, please click the following link: <a href="https://musiclist.com/account/change-password/${foundUser.passwordReset}" target="_blank">https://musiclist.com/account/change-password/${foundUser.passwordReset}</a>.</p><p>If you didn't make this request, feel free to ignore it!</p>`,
+      };
+
+      // Send it
+      mailgun.messages().send(emailData, (error, body) => {
+        if (error || !body) {
+          result = res.send(JSON.stringify({ error: 'Something went wrong while attempting to send the email. Please try again.' }));
+        } else {
+          result = res.send(JSON.stringify({ success: true }));
+        }
+      });
     });
   } catch (err) {
     // if the user doesn't exist, error out

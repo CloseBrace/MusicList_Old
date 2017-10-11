@@ -26,6 +26,7 @@
     "express": "~4.15.2",
     "express-session": "^1.10.1",
     "extract-text-webpack-plugin": "^2.1.2",
+    "mailgun-js": "^0.13.1",
     "mongoose": "^4.9.6",
     "morgan": "~1.8.1",
     "node-sass": "^4.5.3",
