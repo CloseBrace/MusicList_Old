@@ -2,7 +2,16 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink } from 'reactstrap';
 
-const renderLogin = () => <NavLink tag={Link} to="/account/login">Log In</NavLink>;
+const renderLogin = () => (
+  <Nav className="ml-auto" navbar>
+    <NavItem>
+      <NavLink tag={Link} to="/account/login">Log In</NavLink>
+    </NavItem>
+    <NavItem>
+      <NavLink tag={Link} to="/account/register">Register</NavLink>
+    </NavItem>
+  </Nav>
+);
 
 export default class Header extends React.Component {
   constructor(props) {
@@ -19,22 +28,24 @@ export default class Header extends React.Component {
 
   logOutClick(e) {
     e.preventDefault();
-    const { logUserOut } = this.props;
-    logUserOut();
-  }
-
-  renderGreeting(name) {
-    return (
-      <span>
-        Welcome, {name} | <a href="/logout" onClick={this.logOutClick}>Log Out</a>
-      </span>
-    );
+    const { logUserOutFunction } = this.props;
+    logUserOutFunction();
   }
 
   toggleNavbar() {
     this.setState({
       isOpen: !this.state.isOpen,
     });
+  }
+
+  renderGreeting(name) {
+    return (
+      <Nav className="ml-auto" navbar>
+        <NavItem>
+          Welcome, {name} | <a href="/logout" onClick={this.logOutClick}>Log Out</a>
+        </NavItem>
+      </Nav>
+    );
   }
 
   render() {
@@ -45,11 +56,7 @@ export default class Header extends React.Component {
           <NavbarToggler right onClick={this.toggleNavbar} />
           <NavbarBrand tag={Link} to="/">MusicList</NavbarBrand>
           <Collapse isOpen={this.state.isOpen} navbar>
-            <Nav className="ml-auto" navbar>
-              <NavItem>
-                { isLoggedIn ? this.renderGreeting(firstName) : renderLogin() }
-              </NavItem>
-            </Nav>
+            { isLoggedIn ? this.renderGreeting(firstName) : renderLogin() }
           </Collapse>
         </Navbar>
       </header>
