@@ -34,7 +34,8 @@ export default class ChangePasswordPage extends React.Component {
   // Handle submission once all form data is valid
   handleValidSubmit() {
     const formData = this.state;
-    // todo: handle submit
+    const { sendPasswordFunction } = this.props;
+    sendPasswordFunction(formData);
   }
 
   render() {
