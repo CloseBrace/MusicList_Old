@@ -1,3 +1,5 @@
+const Album = require('../../models/album.js');
+const Artist = require('../../models/artist.js');
 const appConfig = require('../../config.js');
 const Discogs = require('disconnect').Client;
 const express = require('express');
@@ -16,6 +18,49 @@ const discogsClient = new Discogs('MusicList-closebrace/0.1', {
 });
 const discogsDB = discogsClient.database();
 
+// Check if album exists and if not, save it
+const saveAlbum = async (albumInfo) => {
+  let errors = false;
+  const albumQuery = await Album.findOne({ discogsId: albumInfo.id });
+  if (!albumQuery) {
+    const albumInfoModified = Object.assign({ discogsId: albumInfo.id }, albumInfo);
+    const newAlbum = new Album(albumInfoModified);
+    await newAlbum.save((error) => {
+      if (error) { errors = true; }
+    });
+  }
+  if (errors) {
+    return false;
+  }
+  return true;
+};
+
+// Check each artist in an array to see if it exists and if not, save it
+const saveArtists = async (artists) => {
+  const formattedArtists = artists.map((artist) => {
+    const newArtist = Object.assign({ discogsId: artist.id }, artist);
+    return newArtist;
+  });
+  try {
+    const result = await Artist.insertMany(
+      formattedArtists,
+      { ordered: false },
+      (error) => {
+        if (error && error.code !== 11000) {
+          return false;
+        }
+        return true;
+      },
+    );
+    return result;
+  } catch (error) {
+    if (error.code !== 11000) {
+      return false;
+    }
+    return true;
+  }
+};
+
 // POST to /add
 router.post('/add', async (req, res) => {
   // Make sure a user's actually logged in
@@ -30,12 +75,39 @@ router.post('/add', async (req, res) => {
     });
   });
 
+  // Get a single artist from Discogs
+  const discogsGetArtist = artistId => new Promise((resolve) => {
+    discogsDB.getArtist(artistId, (err, data) => {
+      resolve(data);
+    });
+  });
+
+  // Loop through artists and hit the Discogs API for each
+  const getArtists = async (artists) => {
+    const results = artists.map((artist) => {
+      const artistInfo = discogsGetArtist(artist.id);
+      return artistInfo;
+    });
+    return Promise.all(results);
+  };
+
   const albumId = parseInt(req.body.id, 10);
   let result;
 
   try {
     // Get album info from discogs AI
     const albumInfo = await discogsGetMaster(albumId);
+
+    // Save it to the MusicList DB if it's not already there
+    const albumSaved = await saveAlbum(albumInfo);
+    if (!albumSaved) { return JSON.stringify(new Error('There was a problem saving the album to the database.')); }
+
+    // Go through the album's artists and get their full info from Discogs
+    const artistsInfo = await getArtists(albumInfo.artists);
+
+    // Save the artists to the MusicList DB if they're not already there
+    const artistsSaved = await saveArtists(artistsInfo);
+    if (!artistsSaved) { return JSON.stringify(new Error('There was a problem saving the artist to the database.')); }
 
     // Find the user we want to save to
     const query = User.findOne({ email: req.user.email });
