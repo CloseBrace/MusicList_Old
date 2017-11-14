@@ -17,6 +17,11 @@ export default function reducer(state = initialState, action) {
       newState.albums = action.json.albums;
       return newState;
     }
+    case 'MUSIC_ARTIST_ADD_SUCCESS': {
+      const newState = Object.assign({ }, state);
+      newState.artists = action.json.artists;
+      return newState;
+    }
     default: {
       return state;
     }

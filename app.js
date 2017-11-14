@@ -24,6 +24,7 @@ const User = require('./models/user');
 // Route Files
 const api = require('./routes/api/index');
 const albums = require('./routes/api/albums');
+const artists = require('./routes/api/artists');
 const authentication = require('./routes/api/authentication');
 const index = require('./routes/index');
 const users = require('./routes/api/users');
@@ -66,6 +67,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 app.use('/api', api);
 app.use('/api/albums', albums);
+app.use('/api/artists', artists);
 app.use('/api/authentication', authentication);
 app.use('/api/users', users);
 app.use('/*', index);
