@@ -83,6 +83,19 @@ router.post('/add', async (req, res) => {
   return result;
 });
 
+// GET to /populate
+router.post('/populate', (req, res, next) => {
+  // Get artist data from an array
+  Artist.find({
+    discogsId: { $in: req.body },
+  }, (err, artists) => {
+    if (err) {
+      return res.json({ error: err.message });
+    }
+    return res.json(artists);
+  });
+});
+
 // POST to /search
 router.post('/search', async (req, res) => {
   // Contact Discogs API

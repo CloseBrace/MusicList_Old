@@ -8,6 +8,8 @@ export const artistAddSuccess = json => ({ type: 'MUSIC_ARTIST_ADD_SUCCESS', jso
 export const artistSearchClear = () => ({ type: 'MUSIC_ARTIST_SEARCH_CLEAR' });
 export const artistSearchFailure = error => ({ type: 'MUSIC_ARTIST_SEARCH_FAILURE', error });
 export const artistSearchSuccess = json => ({ type: 'MUSIC_ARTIST_SEARCH_SUCCESS', json });
+export const artistsPopulateFailure = error => ({ type: 'MUSIC_ARTISTS_POPULATE_FAILURE', error });
+export const artistsPopulateSuccess = json => ({ type: 'MUSIC_ARTISTS_POPULATE_SUCCESS', json });
 
 // Add an Artist
 export function addArtist(id) {
@@ -50,6 +52,47 @@ export function addArtist(id) {
     return dispatch(decrementProgress());
   };
 }
+
+// Populate Artist data
+export function populateArtists(artists) {
+  return async (dispatch) => {
+    // clear the error box if it's displayed
+    dispatch(clearError());
+
+    // turn on spinner
+    dispatch(incrementProgress());
+
+    // Hit the API
+    await fetch(
+      '/api/artists/populate',
+      {
+        method: 'POST',
+        body: JSON.stringify(artists),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'same-origin',
+      },
+    )
+    .then((response) => {
+      if (response.status === 200) {
+        return response.json();
+      }
+      return null;
+    })
+    .then((json) => {
+      if (!json.error) {
+        return dispatch(artistsPopulateSuccess(json));
+      }
+      return dispatch(artistsPopulateFailure(new Error(json.error)));
+    })
+    .catch(error => dispatch(artistsPopulateFailure(new Error(error))));
+
+    // turn off spinner
+    return dispatch(decrementProgress());
+  };
+}
+
 
 // Search Artists
 export function searchArtists(searchText) {

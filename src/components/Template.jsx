@@ -6,6 +6,7 @@ import ArtistsPage from './artists/ArtistsPageContainer';
 import ChangePasswordPage from './account/ChangePasswordPageContainer';
 import ErrorBox from './shared/ErrorBoxContainer';
 import HeaderContainer from './shared/HeaderContainer';
+import ListPage from './list/ListPageContainer';
 import HomePage from './home/HomePageContainer';
 import LoginPage from './account/LoginPageContainer';
 import ProfilePage from './account/ProfilePage';
@@ -30,6 +31,7 @@ export default function Template(props) {
           <Route exact path="/account/reset-password" component={ResetPasswordPage} />
           <Route exact path="/albums" component={AlbumsPage} />
           <Route exact path="/artists" component={ArtistsPage} />
+          <Route path="/list/:username" component={ListPage} />
         </section>
         <div className="loader-wrapper" style={progress > 0 ? { display: 'block' } : { display: 'none' }}>
           <div className="loader-box">
