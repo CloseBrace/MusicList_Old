@@ -62,8 +62,18 @@ export default class AlbumsPage extends React.Component {
     );
   }
 
+  generateButton(user, album) {
+    return (
+      user.albums.indexOf(album.id) < 0 ?
+        <Button color="primary" outline id={album.id} onClick={this.addAlbum}>
+          Add To My List
+        </Button> :
+        <span>Already Listed</span>
+    );
+  }
+
   listAlbums(albums) {
-    const { user } = this.props;
+    const { authentication, user } = this.props;
     return albums.map(album =>
       (
         <tr key={album.id}>
@@ -71,14 +81,7 @@ export default class AlbumsPage extends React.Component {
           <td>{formatTitle(album.title, 1)}</td>
           <td>{formatTitle(album.title, 0)}</td>
           <td>{formatGenre(album.genre)}</td>
-          <td>
-            { user.albums.indexOf(album.id) < 0 ?
-              <Button color="primary" outline id={album.id} onClick={this.addAlbum}>
-                Add To My List
-              </Button> :
-              <span>Already Listed</span>
-            }
-          </td>
+          <td>{authentication.username.length > 0 ? this.generateButton(user, album) : null}</td>
         </tr>
       ));
   }

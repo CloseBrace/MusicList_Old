@@ -56,21 +56,24 @@ export default class ArtistsPage extends React.Component {
     );
   }
 
+  generateButton(user, artist) {
+    return (
+      user.artists.indexOf(artist.id) < 0 ?
+        <Button color="primary" outline id={artist.id} onClick={this.addArtist}>
+          Add To My List
+        </Button> :
+        <span>Already Listed</span>
+    );
+  }
+
   listArtists(artists) {
-    const { user } = this.props;
+    const { user, authentication } = this.props;
     return artists.map(artist =>
       (
         <tr key={artist.id}>
           <td><img src={artist.thumb} alt="artist thumbnail" width="80" height="80" /></td>
           <td>{artist.title}</td>
-          <td>
-            { user.artists.indexOf(artist.id) < 0 ?
-              <Button color="primary" outline id={artist.id} onClick={this.addArtist}>
-                Add To My List
-              </Button> :
-              <span>Already Listed</span>
-            }
-          </td>
+          <td>{authentication.username.length > 0 ? this.generateButton(user, artist) : null}</td>
         </tr>
       ));
   }
