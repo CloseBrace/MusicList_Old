@@ -141,6 +141,20 @@ router.post('/add', async (req, res) => {
   return result;
 });
 
+// POST to /delete
+router.post('/delete', (req, res, next) => {
+  User.findOne({ username: req.user.username }, (err, foundUser) => {
+    // Run filter against the array, returning only those that don't match the passed ID
+    const newAlbums = foundUser.albums.filter(album => album !== req.body.albumId);
+    foundUser.update({ $set: { albums: newAlbums } }, (error) => {
+      if (error) {
+        return res.json(JSON.stringify({ error: 'There was an error removing the album from the user\'s profile' }));
+      }
+      return res.json({ albums: newAlbums });
+    });
+  });
+});
+
 // POST to /populate
 router.post('/populate', (req, res, next) => {
   // Get album data from an array

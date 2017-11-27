@@ -12,13 +12,15 @@ export default function reducer(state = initialState, action) {
       newState.artists = action.json.artists;
       return newState;
     }
-    case 'MUSIC_ALBUM_ADD_SUCCESS': {
-      const newState = Object.assign({ }, state);
+    case 'MUSIC_ALBUM_ADD_SUCCESS':
+    case 'MUSIC_ALBUM_DELETE_SUCCESS': {
+      const newState = Object.assign({}, state);
       newState.albums = action.json.albums;
       return newState;
     }
-    case 'MUSIC_ARTIST_ADD_SUCCESS': {
-      const newState = Object.assign({ }, state);
+    case 'MUSIC_ARTIST_ADD_SUCCESS':
+    case 'MUSIC_ARTIST_DELETE_SUCCESS': {
+      const newState = Object.assign({}, state);
       newState.artists = action.json.artists;
       return newState;
     }

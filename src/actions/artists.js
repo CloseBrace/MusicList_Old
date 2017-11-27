@@ -5,6 +5,8 @@ import { clearError } from './error';
 // Action Creators
 export const artistAddFailure = error => ({ type: 'MUSIC_ARTIST_ADD_FAILURE', error });
 export const artistAddSuccess = json => ({ type: 'MUSIC_ARTIST_ADD_SUCCESS', json });
+export const artistDeleteFailure = error => ({ type: 'MUSIC_ARTIST_DELETE_FAILURE', error });
+export const artistDeleteSuccess = json => ({ type: 'MUSIC_ARTIST_DELETE_SUCCESS', json });
 export const artistSearchClear = () => ({ type: 'MUSIC_ARTIST_SEARCH_CLEAR' });
 export const artistSearchFailure = error => ({ type: 'MUSIC_ARTIST_SEARCH_FAILURE', error });
 export const artistSearchSuccess = json => ({ type: 'MUSIC_ARTIST_SEARCH_SUCCESS', json });
@@ -52,6 +54,53 @@ export function addArtist(id) {
     return dispatch(decrementProgress());
   };
 }
+
+// Delete an artist from user's list
+export function deleteArtist(artistId) {
+  return async (dispatch) => {
+    // clear the error box if it's displayed
+    dispatch(clearError());
+
+    // turn on spinner
+    dispatch(incrementProgress());
+
+    // Hit the API
+    await fetch(
+      '/api/artists/delete',
+      {
+        method: 'POST',
+        body: JSON.stringify({ artistId }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'same-origin',
+      },
+    )
+    .then((response) => {
+      if (response.status === 200) {
+        return response.json();
+      }
+      return null;
+    })
+    .then((json) => {
+      if (!json.error) {
+        dispatch(populateArtists(json.artists)); // eslint-disable-line
+      }
+      return json;
+    })
+    .then((json) => {
+      if (!json.error) {
+        return dispatch(artistDeleteSuccess(json));
+      }
+      return dispatch(artistDeleteFailure(new Error(json.error)));
+    })
+    .catch(error => dispatch(artistDeleteFailure(new Error(error))));
+
+    // turn off spinner
+    return dispatch(decrementProgress());
+  };
+}
+
 
 // Populate Artist data
 export function populateArtists(artists) {

@@ -1,8 +1,8 @@
 import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { populateAlbums } from '../../actions/albums';
-import { populateArtists } from '../../actions/artists';
+import { deleteAlbum, populateAlbums } from '../../actions/albums';
+import { deleteArtist, populateArtists } from '../../actions/artists';
 import { userClearList, userLookup } from '../../actions/users';
 
 import ListPage from './ListPage';
@@ -42,7 +42,7 @@ class ListPageContainer extends React.Component {
   }
 
   render() {
-    const { authentication, list } = this.props;
+    const { authentication, deleteAlbumFunction, deleteArtistFunction, list } = this.props;
     if (list.username === '') {
       return (<p />);
     }
@@ -52,6 +52,8 @@ class ListPageContainer extends React.Component {
         albums={list.albumsPopulated}
         artists={list.artistsPopulated}
         authentication={authentication}
+        deleteAlbumFunction={deleteAlbumFunction}
+        deleteArtistFunction={deleteArtistFunction}
         username={list.username}
       />
     );
@@ -59,6 +61,8 @@ class ListPageContainer extends React.Component {
 }
 
 const mapDispatchToProps = dispatch => bindActionCreators({
+  deleteAlbumFunction: deleteAlbum,
+  deleteArtistFunction: deleteArtist,
   populateAlbumsFunction: populateAlbums,
   populateArtistsFunction: populateArtists,
   userClearListFunction: userClearList,

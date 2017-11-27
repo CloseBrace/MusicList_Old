@@ -14,7 +14,13 @@ export default class ArtistsPage extends React.Component {
   }
 
   deleteItem(id, type) {
-    console.log(id, type);
+    const { deleteAlbumFunction, deleteArtistFunction } = this.props;
+    if (type === 'album') {
+      deleteAlbumFunction(id);
+    }
+    if (type === 'artist') {
+      deleteArtistFunction(id);
+    }
   }
 
   createTable(items) {

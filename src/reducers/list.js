@@ -8,6 +8,11 @@ const initialState = {
 
 export default function reducer(state = initialState, action) {
   switch (action.type) {
+    case 'MUSIC_ALBUM_DELETE_SUCCESS': {
+      const newState = Object.assign({}, state);
+      newState.albums = action.json.albums;
+      return newState;
+    }
     case 'MUSIC_ALBUMS_POPULATE_FAILURE': {
       const newState = Object.assign({}, state);
       newState.albumsPopulated = [];
@@ -16,6 +21,11 @@ export default function reducer(state = initialState, action) {
     case 'MUSIC_ALBUMS_POPULATE_SUCCESS': {
       const newState = Object.assign({}, state);
       newState.albumsPopulated = action.json;
+      return newState;
+    }
+    case 'MUSIC_ARTIST_DELETE_SUCCESS': {
+      const newState = Object.assign({}, state);
+      newState.artists = action.json.artists;
       return newState;
     }
     case 'MUSIC_ARTISTS_POPULATE_FAILURE': {
