@@ -7,6 +7,8 @@ export const albumAddFailure = error => ({ type: 'MUSIC_ALBUM_ADD_FAILURE', erro
 export const albumAddSuccess = json => ({ type: 'MUSIC_ALBUM_ADD_SUCCESS', json });
 export const albumDeleteFailure = error => ({ type: 'MUSIC_ALBUM_DELETE_FAILURE', error });
 export const albumDeleteSuccess = json => ({ type: 'MUSIC_ALBUM_DELETE_SUCCESS', json });
+export const albumLatestFailure = error => ({ type: 'MUSIC_ALBUM_LATEST_FAILURE', error });
+export const albumLatestSuccess = json => ({ type: 'MUSIC_ALBUM_LATEST_SUCCESS', json });
 export const albumSearchClear = () => ({ type: 'MUSIC_ALBUM_SEARCH_CLEAR' });
 export const albumSearchFailure = error => ({ type: 'MUSIC_ALBUM_SEARCH_FAILURE', error });
 export const albumSearchSuccess = json => ({ type: 'MUSIC_ALBUM_SEARCH_SUCCESS', json });
@@ -101,6 +103,52 @@ export function deleteAlbum(albumId) {
   };
 }
 
+// Get the latest album from the Discogs API
+export function getLatestAlbum() {
+  return async (dispatch) => {
+    // turn on spinner
+    dispatch(incrementProgress());
+
+    // Build packet to send to Discogs API
+    const searchQuery = {
+      q: '',
+      type: 'master',
+      format: 'album',
+      sort_order: 'asc',
+    };
+
+    // Send packet to our API, which will communicate with Discogs
+    await fetch(
+      // where to contact
+      '/api/albums/search',
+      // what to send
+      {
+        method: 'POST',
+        body: JSON.stringify(searchQuery),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'same-origin',
+      },
+    )
+    .then((response) => {
+      if (response.status === 200) {
+        return response.json();
+      }
+      return null;
+    })
+    .then((json) => {
+      if (json.results) {
+        return dispatch(albumLatestSuccess(json.results[0]));
+      }
+      return dispatch(albumLatestFailure(new Error(json.error)));
+    })
+    .catch(error => dispatch(albumLatestFailure(new Error(error))));
+
+    // turn off spinner
+    return dispatch(decrementProgress());
+  };
+}
 
 // Populate Album data
 export function populateAlbums(albums) {

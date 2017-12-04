@@ -10,7 +10,6 @@ export default class ArtistsPage extends React.Component {
     this.addArtist = this.addArtist.bind(this);
     this.createTable = this.createTable.bind(this);
     this.handleSearchChange = this.handleSearchChange.bind(this);
-    this.handleKeyPress = this.handleKeyPress.bind(this);
     this.handleValidSubmit = this.handleValidSubmit.bind(this);
     this.listArtists = this.listArtists.bind(this);
 
@@ -23,13 +22,6 @@ export default class ArtistsPage extends React.Component {
   // update state as search value changes
   handleSearchChange(e) {
     this.setState({ searchText: e.target.value });
-  }
-
-  // catch enter clicks
-  handleKeyPress(target) {
-    if (target.charCode === 13) {
-      this.handleValidSubmit();
-    }
   }
 
   // Handle submission once all form data is valid

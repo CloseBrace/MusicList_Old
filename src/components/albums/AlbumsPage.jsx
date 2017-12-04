@@ -14,7 +14,6 @@ export default class AlbumsPage extends React.Component {
     this.addAlbum = this.addAlbum.bind(this);
     this.createTable = this.createTable.bind(this);
     this.handleSearchChange = this.handleSearchChange.bind(this);
-    this.handleKeyPress = this.handleKeyPress.bind(this);
     this.handleValidSubmit = this.handleValidSubmit.bind(this);
     this.listAlbums = this.listAlbums.bind(this);
 
@@ -27,13 +26,6 @@ export default class AlbumsPage extends React.Component {
   // update state as search value changes
   handleSearchChange(e) {
     this.setState({ searchText: e.target.value });
-  }
-
-  // catch enter clicks
-  handleKeyPress(target) {
-    if (target.charCode === 13) {
-      this.handleValidSubmit();
-    }
   }
 
   // Handle submission once all form data is valid
