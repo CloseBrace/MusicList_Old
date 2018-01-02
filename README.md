@@ -21,3 +21,5 @@ Note that currently, each new tutorial gets its own commit, so it's possible to 
   }
 }
 ```
+
+**Note 2:** This tutorial series is finished, in terms of coding. Please check the index for tutorials on optimization and deployment!
