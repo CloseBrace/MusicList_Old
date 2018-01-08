@@ -44,11 +44,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(compression());
 app.use(cookieParser());
-app.use(helmet());
-app.use(passport.initialize());
-app.use(passport.session());
-app.use(express.static(path.join(__dirname, 'public')));
-
 // Express Session
 const sessionValues = {
   cookie: {},
@@ -62,6 +57,10 @@ if (app.get('env') === 'production') {
   sessionValues.cookie.secure = true;
 }
 app.use(expressSession(sessionValues));
+app.use(helmet());
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Webpack Server
 if (process.env.NODE_ENV !== 'production') {
