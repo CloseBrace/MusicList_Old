@@ -31,8 +31,7 @@ const users = require('./routes/api/users');
 const app = express();
 
 // Connect to Mongoose
-mongoose.connect('mongodb://localhost/musiclist');
-
+mongoose.connect(`mongodb://${appConfig.mongodb.user}:${appConfig.mongodb.password}@localhost/musiclist?authSource=admin`, { useMongoClient: true });
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -44,11 +43,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(compression());
 app.use(cookieParser());
-app.use(helmet());
-app.use(passport.initialize());
-app.use(passport.session());
-app.use(express.static(path.join(__dirname, 'public')));
-
 // Express Session
 const sessionValues = {
   cookie: {},
@@ -59,9 +53,13 @@ const sessionValues = {
 };
 if (app.get('env') === 'production') {
   app.set('trust proxy', 1);
-  sessionValues.cookie.secure = true;
+  // sessionValues.cookie.secure = true;
 }
 app.use(expressSession(sessionValues));
+app.use(helmet());
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Webpack Server
 if (process.env.NODE_ENV !== 'production') {
